@@ -60,12 +60,10 @@ class ArithmeticBeast:
     def _compute_all(self):
         operations_ps = list(itertools.permutations(self.operations))
 
-        results = []
         for tree in self.trees:
             for operations_p in operations_ps:
                 operations_p = list(operations_p)  # self._compute requires it to be mutable.
-                results.append(self._compute(tree, operations_p))
-        return results
+                yield self._compute(tree, operations_p)
 
     def print_phrases_for_result(self, expected_result):
         for result in self.results:
