@@ -13,7 +13,7 @@ def main():
     expected_result = 425
 
     beast = ArithmeticBeast(numbers, operations)
-    beast.get_phrases_for_result(expected_result)
+    beast.print_phrases_for_result(expected_result)
 
 
 if __name__ == '__main__':

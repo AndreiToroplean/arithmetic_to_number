@@ -67,7 +67,7 @@ class ArithmeticBeast:
                 results.append(self._compute(tree, operations_p))
         return results
 
-    def get_phrases_for_result(self, expected_result):
+    def print_phrases_for_result(self, expected_result):
         for result in self.results:
             if result[0] == expected_result:
                 print(f"{result[1]} = {result[0]}")
