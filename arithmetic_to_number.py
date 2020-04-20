@@ -8,12 +8,12 @@ def main():
     multiplication = Operation(lambda a, b: a*b, '*')
     division = Operation(lambda a, b: a/b, '/')
 
-    numbers = [75, 25, 4, 100]
+    numbers = [25, 75, 4, 100]
     operations = [addition, subtraction, multiplication]
-    proposition = 425
+    expected_result = 425
 
     beast = ArithmeticBeast(numbers, operations)
-    beast.check_possible(proposition)
+    beast.get_phrases_for_result(expected_result)
 
 
 if __name__ == '__main__':

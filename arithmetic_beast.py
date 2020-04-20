@@ -5,7 +5,7 @@ class ArithmeticBeast:
     def __init__(self, numbers, operations):
         self.numbers = numbers
         self.operations = operations
-        self.orders = self._make_orders()
+        self.trees = self._make_all_trees()
         self.results = self._compute_all()
 
     @staticmethod
@@ -24,15 +24,15 @@ class ArithmeticBeast:
         return part_a, part_b
 
     @staticmethod
-    def _compute(order, operations_p, level=0):
+    def _compute(tree, operations_p, level=0):
         values = []
         phrases = []
-        for part in order:
+        for subtree in tree:
             try:
-                value, phrase = ArithmeticBeast._compute(part, operations_p, level + 1)
+                value, phrase = ArithmeticBeast._compute(subtree, operations_p, level + 1)
             except TypeError:
-                values.append(part)
-                phrases.append(f"{part}")
+                values.append(subtree)
+                phrases.append(f"{subtree}")
             else:
                 values.append(value)
                 phrases.append(phrase)
@@ -42,27 +42,32 @@ class ArithmeticBeast:
             value = operation.get_value(*values)
         except ZeroDivisionError:
             value = float("NaN")
-        return value, operation.get_phrase(*phrases)
+        phrase = operation.get_phrase(*phrases)
+        return value, phrase
 
-    def _make_orders(self):
+    def _make_all_trees(self):
+        # todo: make it generate unique trees by default, removing the need to use a set.
+        #   I think I need to code a function replacing itertools.permutations here to achieve that.
+
         numbers_ps = list(itertools.permutations(self.numbers))
 
-        orders = set()
+        trees = set()
         for split_p in itertools.permutations(range(1, len(self.numbers))):
             for numbers_p in numbers_ps:
-                orders.add(self._make_tree(numbers_p, split_p))
-        return orders
+                trees.add(self._make_tree(numbers_p, split_p))
+        return trees
 
     def _compute_all(self):
         operations_ps = list(itertools.permutations(self.operations))
 
         results = []
-        for order in self.orders:
+        for tree in self.trees:
             for operations_p in operations_ps:
-                results.append(self._compute(order, list(operations_p)))
+                operations_p = list(operations_p)  # self._compute requires it to be mutable.
+                results.append(self._compute(tree, operations_p))
         return results
 
-    def check_possible(self, proposition):
+    def get_phrases_for_result(self, expected_result):
         for result in self.results:
-            if result[0] == proposition:
+            if result[0] == expected_result:
                 print(f"{result[1]} = {result[0]}")
