@@ -8,8 +8,8 @@ class ArithmeticBeast:
         self.trees = self._make_all_trees()
         self.results = self._compute_all()
 
-    @staticmethod
-    def _make_tree(numbers_p, split_p, level=0, shift=0):
+    @classmethod
+    def _make_tree(cls, numbers_p, split_p, level=0, shift=0):
         if len(numbers_p) == 1:
             return numbers_p[0]
 
@@ -19,17 +19,17 @@ class ArithmeticBeast:
                 break
             level += 1
 
-        part_a = ArithmeticBeast._make_tree(numbers_p[:split], split_p, level + 1, shift)
-        part_b = ArithmeticBeast._make_tree(numbers_p[split:], split_p, level + 1, shift + split)
+        part_a = cls._make_tree(numbers_p[:split], split_p, level + 1, shift)
+        part_b = cls._make_tree(numbers_p[split:], split_p, level + 1, shift + split)
         return part_a, part_b
 
-    @staticmethod
-    def _compute(tree, operations_p, level=0):
+    @classmethod
+    def _compute(cls, tree, operations_p, level=0):
         values = []
         phrases = []
         for subtree in tree:
             try:
-                value, phrase = ArithmeticBeast._compute(subtree, operations_p, level + 1)
+                value, phrase = cls._compute(subtree, operations_p, level + 1)
             except TypeError:
                 values.append(subtree)
                 phrases.append(f"{subtree}")
